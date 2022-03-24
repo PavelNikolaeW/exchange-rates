@@ -1,4 +1,4 @@
-# exchange-rates
+# [Курсы валют](https://pavelnikolaew.github.io/exchange-rates/index.html)
 
 Тестовое задание.
 
