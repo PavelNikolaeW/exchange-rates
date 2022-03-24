@@ -8,7 +8,7 @@ function makeUrls() {
     let result = [];
 
     for (var i = 1; i < 11; i++) {
-        let oldDate = new Date(year, month, date - i)
+        let oldDate = new Date(year, month + 1, date - i)
         let oldMonth = oldDate.getMonth();
         if (oldMonth < 10) oldMonth = "0" + oldMonth;
         result.push(`https://www.cbr-xml-daily.ru/archive/${oldDate.getFullYear()}/${oldMonth}/${oldDate.getDate()}/daily_json.js`)
