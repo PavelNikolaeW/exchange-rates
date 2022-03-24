@@ -44,15 +44,15 @@ function log(data) {
     let key = window.location.href.split("?")[1];
     let date = data.Date.split("T")[0];
     tBody.insertAdjacentHTML("beforeend", getRow(data.Valute[key], date))
-
-    // for (let key in data.Valute) {
-    //     tBody.insertAdjacentHTML("beforeend", getRow(data.Valute[key]))
-    // }
 }
 
 let urls = makeUrls()
+let valuteName = "";
 
 for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
     fetch(url).then(resp => resp.json()).then(data => log(data))
 }
+console.log(valuteName);
+let title = document.querySelector("title");
+title.insertAdjacentText("beforeend", "История курса для " + window.location.href.split("?")[2].replace("%20", " "));
