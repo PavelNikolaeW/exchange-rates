@@ -1,15 +1,20 @@
+function getWeekDay(day) {
+    let days = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
+    return days[day];
+}
+
 function makeUrls() {
     var now = new Date();
     var year = now.getFullYear();
     var month = now.getMonth();
     var date = now.getDate();
-
-
     let result = [];
-
-    for (var i = 1; i < 11; i++) {
-        let oldDate = new Date(year, month + 1, date - i)
-        let oldMonth = oldDate.getMonth();
+    for (var i = 1; i < 15; i++) {
+        let oldDate = new Date(year, month, date - i)
+        let oldMonth = oldDate.getMonth() + 1;
+        let day = oldDate.getDay();
+        if (getWeekDay(day) === "ВС" || getWeekDay(day) === "ПН")
+            continue;
         if (oldMonth < 10) oldMonth = "0" + oldMonth;
         result.push(`https://www.cbr-xml-daily.ru/archive/${oldDate.getFullYear()}/${oldMonth}/${oldDate.getDate()}/daily_json.js`)
     }
@@ -35,8 +40,6 @@ function log(data) {
 					<td>${trend(valute.Value, valute.Previous)}</td>
 			</tr>`;
     }
-
-
     let tBody = document.querySelector("tbody");
     let key = window.location.href.split("?")[1];
     let date = data.Date.split("T")[0];
@@ -48,13 +51,8 @@ function log(data) {
 }
 
 let urls = makeUrls()
+
 for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
-    // fetch(url).then(resp => resp.json()).then(data => log(data));
-
-    try {
-        fetch(url).then(resp => resp.json()).then(data => log(data));
-    } catch (err) {
-        console.log(err);
-    }
+    fetch(url).then(resp => resp.json()).then(data => log(data))
 }
