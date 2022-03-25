@@ -56,7 +56,18 @@ let valuteName = "";
 
 for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
-    fetch(url).then(resp => resp.json()).then(data => log(data))
+    fetch(url)
+        .then(res => {
+            if (res.ok) {
+                return res.json()
+            } else {
+                throw Error
+            }
+        })
+        .then(data => log(data))
+        .catch(error => {
+            console.log(error);
+        })
 }
 let title = document.querySelector("title");
 title.insertAdjacentText("beforeend", "История курса для " + window.location.href.split("?")[2].replace("%20", " "));
