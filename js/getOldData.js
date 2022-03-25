@@ -9,35 +9,40 @@ function makeUrls() {
     var month = now.getMonth();
     var date = now.getDate();
     let result = [];
-    for (var i = 1; i < 15; i++) {
+
+    for (var i = 1; result.length < 10; i++) {
         let oldDate = new Date(year, month, date - i)
         let oldMonth = oldDate.getMonth() + 1;
         let day = oldDate.getDay();
+
         if (getWeekDay(day) === "ВС" || getWeekDay(day) === "ПН")
             continue;
-        if (oldMonth < 10) oldMonth = "0" + oldMonth;
+        if (oldMonth < 10)
+            oldMonth = "0" + oldMonth;
+
         result.push(`https://www.cbr-xml-daily.ru/archive/${oldDate.getFullYear()}/${oldMonth}/${oldDate.getDate()}/daily_json.js`)
     }
     return result;
 }
 
 function log(data) {
-    function trend(current, previous) {
+    function getTrend(current, previous) {
         var rounded = function(number) {
             return +number.toFixed(3);
         }
-        if (current > previous) return " ▲ " + rounded((current - previous) / current * 100) + "%";
+        if (current > previous) return " ▲  " + rounded((current - previous) / current * 100) + "%";
         if (current < previous) return " ▼ " + rounded((current - previous) / current * 100) + "%";
         return "";
     }
 
     function getRow(valute, date) {
+        const trendRow = getTrend(valute.Value, valute.Previous)
         return `	
 			<tr title="${valute.Name}">
 					<th scope="row">${date}</th>
 					<td>${valute.CharCode}</td>
 					<td>${valute.Value}</td>
-					<td>${trend(valute.Value, valute.Previous)}</td>
+					<td class="${trendRow[3] === "-" ? "text-danger" : "text-success"}">${trendRow}</td>
 			</tr>`;
     }
     let tBody = document.querySelector("tbody");
@@ -53,6 +58,5 @@ for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
     fetch(url).then(resp => resp.json()).then(data => log(data))
 }
-console.log(valuteName);
 let title = document.querySelector("title");
 title.insertAdjacentText("beforeend", "История курса для " + window.location.href.split("?")[2].replace("%20", " "));
