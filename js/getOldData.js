@@ -65,4 +65,4 @@ for (let i = 0; i < urls.length; i++) {
 }
 
 const title = document.querySelector("title")
-title.insertAdjacentText("beforeend", "История курса для " + window.location.href.split("?")[2].replace("%20", " "))
+title.insertAdjacentText("beforeend", "История курса для " + window.location.href.split("?")[1])
