@@ -4,18 +4,18 @@ function getWeekDay(day) {
 }
 
 function makeUrls() {
-    var now = new Date();
-    var year = now.getFullYear();
-    var month = now.getMonth();
-    var date = now.getDate();
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const date = now.getDate();
     let result = [];
 
     for (var i = 1; result.length < 10; i++) {
-        let oldDate = new Date(year, month, date - i)
+        const oldDate = new Date(year, month, date - i)
         let oldMonth = oldDate.getMonth() + 1;
-        let day = oldDate.getDay();
+        const day = getWeekDay(oldDate.getDay());
 
-        if (getWeekDay(day) === "ВС" || getWeekDay(day) === "ПН")
+        if (day === "ВС" || day === "ПН")
             continue;
         if (oldMonth < 10)
             oldMonth = "0" + oldMonth;
@@ -25,35 +25,25 @@ function makeUrls() {
     return result;
 }
 
-function log(data) {
-    function getTrend(current, previous) {
-        var rounded = function(number) {
-            return +number.toFixed(3);
-        }
-        if (current > previous) return " ▲  " + rounded((current - previous) / current * 100) + "%";
-        if (current < previous) return " ▼ " + rounded((current - previous) / current * 100) + "%";
-        return "";
-    }
+function getRow(valute, date) {
+    const trendRow = getTrend(valute.Value, valute.Previous)
+    return `	
+<tr title="${valute.Name}">
+		<th scope="row">${date}</th>
+		<td>${valute.CharCode}</td>
+		<td>${valute.Value}</td>
+		<td class="${trendRow[3] === "-" ? "text-danger" : "text-success"}">${trendRow}</td>
+</tr>`;
+}
 
-    function getRow(valute, date) {
-        const trendRow = getTrend(valute.Value, valute.Previous)
-        return `	
-			<tr title="${valute.Name}">
-					<th scope="row">${date}</th>
-					<td>${valute.CharCode}</td>
-					<td>${valute.Value}</td>
-					<td class="${trendRow[3] === "-" ? "text-danger" : "text-success"}">${trendRow}</td>
-			</tr>`;
-    }
-    let tBody = document.querySelector("tbody");
-    let key = window.location.href.split("?")[1];
-    let date = data.Date.split("T")[0];
+function log(data) {
+    const tBody = document.querySelector("tbody");
+    const key = window.location.href.split("?")[1];
+    const date = data.Date.split("T")[0];
     tBody.insertAdjacentHTML("beforeend", getRow(data.Valute[key], date))
 }
 
-let urls = makeUrls()
-let valuteName = "";
-
+const urls = makeUrls()
 for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
     fetch(url)
@@ -69,5 +59,6 @@ for (let i = 0; i < urls.length; i++) {
             console.log(error);
         })
 }
-let title = document.querySelector("title");
+
+const title = document.querySelector("title");
 title.insertAdjacentText("beforeend", "История курса для " + window.location.href.split("?")[2].replace("%20", " "));
