@@ -57,7 +57,6 @@ for (let i = 0; i < urls.length; i++) {
         })
         .then(data => {
             log(data)
-            valuteName = data
         })
         .catch(error => {
             console.log(error)
