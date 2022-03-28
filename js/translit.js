@@ -1,5 +1,5 @@
 function translit(word) {
-    let answer = '';
+    let answer = ''
     const converter = {
         'а': 'a',
         'б': 'b',
@@ -68,13 +68,13 @@ function translit(word) {
         'Э': 'E',
         'Ю': 'Yu',
         'Я': 'Ya'
-    };
+    }
     for (var i = 0; i < word.length; ++i) {
         if (converter[word[i]] == undefined) {
-            answer += word[i];
+            answer += word[i]
         } else {
-            answer += converter[word[i]];
+            answer += converter[word[i]]
         }
     }
-    return answer;
+    return answer
 }
