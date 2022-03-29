@@ -36,10 +36,14 @@ function getRow(valute, date) {
 </tr>`
 }
 
+var arhive = [] // save course history
 const tBody = document.querySelector("tbody")
-const key = window.location.href.split("?")[1]
+const keys = window.location.href.split("?").slice(1, )
+const key = keys[0]
+
 
 function log(data) {
+    arhive.push(data)
     const date = data.Date.split("T")[0]
     tBody.insertAdjacentHTML("beforeend", getRow(data.Valute[key], date))
 }
