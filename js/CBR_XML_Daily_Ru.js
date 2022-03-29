@@ -9,7 +9,7 @@ function getRow(valute) {
 }
 
 function CBR_XML_Daily_Ru(rates) {
-    let tBody = document.querySelector("tbody")
+    const tBody = document.querySelector("tbody")
     for (var key in rates.Valute) {
         tBody.insertAdjacentHTML("beforeend", getRow(rates.Valute[key]))
     }
