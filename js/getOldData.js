@@ -79,15 +79,22 @@ google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
     let dateTable = [
-        ['date', key]
+        keys,
     ]
     for (let i in archive.reverse()) {
         const elem = archive[i].Valute
         const date = archive[i].Date.split('T')[0].slice(5)
-        dateTable.push([date, elem[key].Value])
+        let values = [date]
+        for (let index in keys) {
+            const valute = keys[index]
+            values.push(elem[valute].Value)
+        }
+        dateTable.push(values)
     }
-    var data = google.visualization.arrayToDataTable(dateTable);
+    console.log(dateTable);
+    dateTable[0].unshift('date')
 
+    var data = google.visualization.arrayToDataTable(dateTable);
     var options = {
         legend: { position: 'top' }
     };
