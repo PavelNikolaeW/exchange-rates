@@ -36,9 +36,10 @@ function getRow(valute, date) {
 </tr>`
 }
 
+const tBody = document.querySelector("tbody")
+const key = window.location.href.split("?")[1]
+
 function log(data) {
-    const tBody = document.querySelector("tbody")
-    const key = window.location.href.split("?")[1]
     const date = data.Date.split("T")[0]
     tBody.insertAdjacentHTML("beforeend", getRow(data.Valute[key], date))
 }
