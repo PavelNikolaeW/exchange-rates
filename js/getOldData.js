@@ -36,14 +36,14 @@ function getRow(valute, date) {
 </tr>`
 }
 
-var arhive = [] // save course history
+var archive = [] // save course history
 const tBody = document.querySelector("tbody")
 const keys = window.location.href.split("?").slice(1, )
 const key = keys[0]
 
 
 function log(data) {
-    arhive.push(data)
+    archive.push(data)
     const date = data.Date.split("T")[0]
     tBody.insertAdjacentHTML("beforeend", getRow(data.Valute[key], date))
 }
@@ -70,3 +70,28 @@ for (let i = 0; i < urls.length; i++) {
 
 const title = document.querySelector("title")
 title.insertAdjacentText("beforeend", "История курса для " + window.location.href.split("?")[1])
+
+
+// add chart
+
+google.charts.load('current', { 'packages': ['corechart'] });
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+    let dateTable = [
+        ['date', key]
+    ]
+    for (let i in archive.reverse()) {
+        const elem = archive[i].Valute
+        const date = archive[i].Date.split('T')[0].slice(5)
+        dateTable.push([date, elem[key].Value])
+    }
+    var data = google.visualization.arrayToDataTable(dateTable);
+
+    var options = {
+        legend: { position: 'top' }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('chart'));
+    chart.draw(data, options);
+}
