@@ -70,4 +70,4 @@ for (let i = 0; i < urls.length; i++) {
 
 // change page title
 const title = document.querySelector("title")
-title.insertAdjacentText("beforeend", "История курса для " + window.location.href.split("?")[1])
+title.insertAdjacentText("beforeend", "История курса для " + key)
